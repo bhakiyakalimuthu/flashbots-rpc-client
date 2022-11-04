@@ -11,13 +11,16 @@ import (
 	"time"
 
 	"github.com/bhakiyakalimuthu/flashbots-rpc-client/common"
+	"go.uber.org/zap"
 )
 
 type HttpClient struct {
+	logger  *zap.Logger
 	client  *http.Client
 	url     string
 	mu      sync.Mutex // protects headers
 	headers http.Header
+	signer  common.Signer
 }
 
 func DialHttpClient(rawURL string) (*HttpClient, error) {
@@ -32,9 +35,11 @@ func DialHttpClient(rawURL string) (*HttpClient, error) {
 		Timeout: time.Second * 5,
 	}
 	return &HttpClient{
+		logger:  common.NewLogger(),
 		client:  client,
 		url:     rawURL,
 		headers: headers,
+		signer:  common.NewSigner(),
 	}, nil
 }
 
@@ -42,15 +47,23 @@ func DialHttpClientWithLocalHost(rawURL string) (*HttpClient, error) {
 	return DialHttpClient("http://localhost:8080")
 }
 
-func (hc *HttpClient) doRequest(ctx context.Context, msg interface{}, signature string) (io.ReadCloser, error) {
-	// prepare body
-	body, err := json.Marshal(msg)
+func (hc *HttpClient) doRequest(ctx context.Context, msg interface{}) (io.ReadCloser, error) {
+	// prepare payload
+	payload, err := json.Marshal(msg)
 	if err != nil {
+		hc.logger.Error("failed to prepare payload", zap.Error(err))
+		return nil, err
+	}
+
+	// sign payload
+	signature, err := hc.signer.SignPayload(payload)
+	if err != nil {
+		hc.logger.Error("failed to sign payload", zap.Error(err))
 		return nil, err
 	}
 
 	// create request
-	request, err := http.NewRequestWithContext(ctx, http.MethodPost, hc.url, io.NopCloser(bytes.NewReader(body)))
+	request, err := http.NewRequestWithContext(ctx, http.MethodPost, hc.url, io.NopCloser(bytes.NewReader(payload)))
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +71,7 @@ func (hc *HttpClient) doRequest(ctx context.Context, msg interface{}, signature 
 	// set headers
 	hc.mu.Lock()
 	request.Header = hc.headers.Clone()
-	request.Header.Set("x-flashbots-signature", signature)
+	request.Header.Set("x-flashbots-signature", *signature)
 	hc.mu.Unlock()
 
 	// send request
@@ -84,13 +97,13 @@ func (hc *HttpClient) doRequest(ctx context.Context, msg interface{}, signature 
 	return resp.Body, nil
 }
 
-func (hc *HttpClient) CallContext(ctx context.Context, msg interface{}, signature string) (*common.JSONRPCMessage, error) {
-	respBody, err := hc.doRequest(ctx, msg, signature)
-	respBody.Close()
+func (hc *HttpClient) CallContext(ctx context.Context, msg interface{}) (*common.JSONRPCMessage, error) {
+	respBody, err := hc.doRequest(ctx, msg)
 	if err != nil {
 		return nil, err
 	}
 
+	defer respBody.Close()
 	var resp *common.JSONRPCMessage
 	if err = json.NewDecoder(respBody).Decode(&resp); err != nil {
 		return nil, err

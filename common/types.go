@@ -20,7 +20,7 @@ type JSONRPCMessage struct {
 	Result  json.RawMessage `json:"result,omitempty"`
 }
 
-func NewJSONRPC(method string, params json.RawMessage) JSONRPCMessage {
+func NewJSONRPCMessage(method string, params json.RawMessage) JSONRPCMessage {
 	return JSONRPCMessage{
 		ID:      genID(),
 		Method:  method,
@@ -93,6 +93,10 @@ type TxSimulationResponse struct {
 	Error             *string `json:"error"`
 	Revert            *string `json:"revert"`
 	Value             *string `json:"value"`
+}
+
+type SendBundleResponse struct {
+	BundleHash string `json:"bundleHash"`
 }
 
 type BundleStatsResponse struct {
