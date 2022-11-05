@@ -30,7 +30,7 @@ func (s *signer) SignPayload(payload json.RawMessage) (*string, error) {
 	if err != nil {
 		return nil, err
 	}
-	body, err := json.Marshal(&payload)
+	body, err := json.Marshal(payload)
 	if err != nil {
 		return nil, err
 	}

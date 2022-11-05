@@ -55,11 +55,11 @@ func (fbc *flashbotsClient) CallBundle(ctx context.Context, arg interface{}) (*c
 	if err != nil {
 		return nil, err
 	}
-	var _CallBundleResponse *common.CallBundleResponse
-	if err = json.Unmarshal(res.Result, &_CallBundleResponse); err != nil {
+	var callBundleResponse *common.CallBundleResponse
+	if err = json.Unmarshal(res.Result, &callBundleResponse); err != nil {
 		return nil, err
 	}
-	return _CallBundleResponse, nil
+	return callBundleResponse, nil
 }
 
 func (fbc *flashbotsClient) SendBundle(ctx context.Context, arg interface{}) (*common.SendBundleResponse, error) {
@@ -75,9 +75,9 @@ func (fbc *flashbotsClient) SendBundle(ctx context.Context, arg interface{}) (*c
 	if err != nil {
 		return nil, err
 	}
-	var _SendBundleResponse *common.SendBundleResponse
-	if err = json.Unmarshal(res.Result, &_SendBundleResponse); err != nil {
+	var sendBundleResponse *common.SendBundleResponse
+	if err = json.Unmarshal(res.Result, &sendBundleResponse); err != nil {
 		return nil, err
 	}
-	return _SendBundleResponse, nil
+	return sendBundleResponse, nil
 }

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"math/rand"
 	"strconv"
-	"time"
 )
 
 const (
@@ -42,11 +41,11 @@ type CallBundleArgs struct {
 }
 
 type SendBundleArgs struct {
-	Txs               []string  // Array[String], A list of signed transactions to execute in an atomic bundle
-	BlockNumber       string    // String, a hex encoded block number for which this bundle is valid on
-	MinTimestamp      time.Time // (Optional) Number, the minimum timestamp for which this bundle is valid, in seconds since the unix epoch
-	MaxTimestamp      time.Time // (Optional) Number, the maximum timestamp for which this bundle is valid, in seconds since the unix epoch
-	RevertingTxHashes []string  // (Optional) Array[String], A list of tx hashes that are allowed to revert
+	Txs               []string // Array[String], A list of signed transactions to execute in an atomic bundle
+	BlockNumber       string   // String, a hex encoded block number for which this bundle is valid on
+	MinTimestamp      *uint64  // (Optional) Number, the minimum timestamp for which this bundle is valid, in seconds since the unix epoch
+	MaxTimestamp      *uint64  // (Optional) Number, the maximum timestamp for which this bundle is valid, in seconds since the unix epoch
+	RevertingTxHashes []string // (Optional) Array[String], A list of tx hashes that are allowed to revert
 }
 
 type UserStatsArgs struct {

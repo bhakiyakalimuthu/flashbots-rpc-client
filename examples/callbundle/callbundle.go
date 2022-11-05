@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/bhakiyakalimuthu/flashbots-rpc-client/common"
@@ -16,7 +17,7 @@ func main() {
 	l := common.NewLogger()
 
 	// tx utility for creating rawTx
-	txMgr := util.NewTxMgr("https://goerli.infura.io/v3/c0b60edd67ec4ea4b2a9a790060dc3b8")
+	txMgr := util.NewTxMgr(os.Getenv("INFURA_GOERLI"))
 	rawTx, blockNum := txMgr.CreateTx(context.Background())
 
 	// create call bundle argument
@@ -28,7 +29,6 @@ func main() {
 		Timestamp:        &now,
 	}}
 
-	//c := fbclient.NewFlashbotsClient("https://azf8iht6vh.execute-api.us-east-2.amazonaws.com/dev")
 	// create flashbots client
 	c := fbclient.NewFlashbotsClient("https://relay-goerli.flashbots.net")
 
