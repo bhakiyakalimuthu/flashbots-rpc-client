@@ -21,7 +21,8 @@ type JSONRPCMessage struct {
 
 func NewJSONRPCMessage(method string, params json.RawMessage) JSONRPCMessage {
 	return JSONRPCMessage{
-		ID:      genID(),
+		//ID:      genID(),
+		ID:      []byte(`1`),
 		Method:  method,
 		Params:  params,
 		Version: JSONRPCVersion,
@@ -29,7 +30,7 @@ func NewJSONRPCMessage(method string, params json.RawMessage) JSONRPCMessage {
 }
 
 func genID() json.RawMessage {
-	// id := atomic.AddUint32(&c.idCounter, 1)
+	// id := atomic.AddUint32(&idCounter, 1)
 	return strconv.AppendUint(nil, uint64(rand.Int()), 10)
 }
 
@@ -60,7 +61,7 @@ type BundleStatsArgs struct {
 type SendPrivateTxArgs struct {
 	Tx             string `json:"tx"`             // String, raw signed transaction
 	MaxBlockNumber string `json:"maxBlockNumber"` // Hex-encoded number string, optional. Highest block number in which the transaction should be included.
-	Preferences    struct {
+	Preferences    *struct {
 		Fast bool `json:"fast"` // optional. "fast" left for backwards compatibility; may be removed in a future version
 	} `json:"preferences"`
 }
@@ -96,6 +97,14 @@ type TxSimulationResponse struct {
 
 type SendBundleResponse struct {
 	BundleHash string `json:"bundleHash"`
+}
+
+type SendPrivateTransactionResponse struct {
+	TxHash string `json:"txHash"`
+}
+
+type CancelPrivateTransactionResponse struct {
+	IsCancelled bool `json:"isCancelled"`
 }
 
 type BundleStatsResponse struct {
