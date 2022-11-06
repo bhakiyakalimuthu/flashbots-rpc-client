@@ -20,7 +20,6 @@ func main() {
 
 	// create user stats argument
 	arg := []common.UserStatsArgs{{
-
 		BlockNumber: blockNum,
 	}}
 	// create flashbots client

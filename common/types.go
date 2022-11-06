@@ -2,8 +2,6 @@ package common
 
 import (
 	"encoding/json"
-	"math/rand"
-	"strconv"
 )
 
 const (
@@ -21,7 +19,7 @@ type JSONRPCMessage struct {
 
 func NewJSONRPCMessage(method string, params json.RawMessage) JSONRPCMessage {
 	return JSONRPCMessage{
-		//ID:      genID(),
+		// ID:      genID(),
 		ID:      []byte(`1`),
 		Method:  method,
 		Params:  params,
@@ -29,10 +27,10 @@ func NewJSONRPCMessage(method string, params json.RawMessage) JSONRPCMessage {
 	}
 }
 
-func genID() json.RawMessage {
-	// id := atomic.AddUint32(&idCounter, 1)
-	return strconv.AppendUint(nil, uint64(rand.Int()), 10)
-}
+//func genID() json.RawMessage {
+//	id := atomic.AddUint32(&idCounter, 1)
+//	return strconv.AppendUint(nil, uint64(rand.Int()), 10)
+//}
 
 type CallBundleArgs struct {
 	Txs              []string `json:"txs"`              // Array[String], A list of signed transactions to execute in an atomic bundle

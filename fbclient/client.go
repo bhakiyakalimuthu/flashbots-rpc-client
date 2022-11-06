@@ -43,7 +43,6 @@ func NewFlashbotsClient(url string) *flashbotsClient {
 }
 
 func (fbc *flashbotsClient) CallBundle(ctx context.Context, arg interface{}) (*common.CallBundleResponse, error) {
-
 	b, err := json.Marshal(arg)
 	if err != nil {
 		fbc.logger.Error("failed to marshal param", zap.Error(err))
@@ -63,7 +62,6 @@ func (fbc *flashbotsClient) CallBundle(ctx context.Context, arg interface{}) (*c
 }
 
 func (fbc *flashbotsClient) BundleStats(ctx context.Context, arg interface{}) (*common.BundleStatsResponse, error) {
-
 	b, err := json.Marshal(arg)
 	if err != nil {
 		fbc.logger.Error("failed to marshal param", zap.Error(err))
@@ -83,7 +81,6 @@ func (fbc *flashbotsClient) BundleStats(ctx context.Context, arg interface{}) (*
 }
 
 func (fbc *flashbotsClient) UserStats(ctx context.Context, arg interface{}) (*common.UserStatsResponse, error) {
-
 	b, err := json.Marshal(arg)
 	if err != nil {
 		fbc.logger.Error("failed to marshal param", zap.Error(err))
@@ -101,8 +98,8 @@ func (fbc *flashbotsClient) UserStats(ctx context.Context, arg interface{}) (*co
 	}
 	return userStatsResponse, nil
 }
-func (fbc *flashbotsClient) SendBundle(ctx context.Context, arg interface{}) (*common.SendBundleResponse, error) {
 
+func (fbc *flashbotsClient) SendBundle(ctx context.Context, arg interface{}) (*common.SendBundleResponse, error) {
 	b, err := json.Marshal(arg)
 	if err != nil {
 		fbc.logger.Error("failed to marshal param", zap.Error(err))
@@ -122,7 +119,6 @@ func (fbc *flashbotsClient) SendBundle(ctx context.Context, arg interface{}) (*c
 }
 
 func (fbc *flashbotsClient) SendPrivateTransaction(ctx context.Context, arg interface{}) (*common.SendPrivateTransactionResponse, error) {
-
 	b, err := json.Marshal(arg)
 	if err != nil {
 		fbc.logger.Error("failed to marshal param", zap.Error(err))

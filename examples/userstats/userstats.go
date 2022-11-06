@@ -20,7 +20,6 @@ func main() {
 
 	// create bundle stats argument
 	arg := []common.BundleStatsArgs{{
-
 		BundleHash:  "0x05e440b106aefe2b7375f08fab4dbb9554baa384a8df0315ffe9627f3104bea6",
 		BlockNumber: blockNum,
 	}}

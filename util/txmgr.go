@@ -17,7 +17,7 @@ import (
 	"go.uber.org/zap"
 )
 
-//TxMgr Transaction manager is used as test utility to create transaction
+// TxMgr Transaction manager is used as test utility to create transaction
 type TxMgr interface {
 	CreateTx(ctx context.Context) ([]byte, string)
 }
@@ -77,7 +77,7 @@ func (t *txMgr) CreateTx(ctx context.Context) ([]byte, string) {
 		return nil, ""
 	}
 
-	//id = big.NewInt(5) // Ganache has issue with chainID, using hard coded value
+	// id = big.NewInt(5) // Ganache has issue with chainID, using hard coded value
 	t.logger.Info("chainID", zap.Any("id", id))
 	// balance
 
@@ -87,7 +87,7 @@ func (t *txMgr) CreateTx(ctx context.Context) ([]byte, string) {
 		return nil, ""
 	}
 	t.logger.Info("2-balance", zap.Any("balanceInWei", bal))
-	//1 ether = 10^18
+	// 1 ether = 10^18
 	fBal := new(big.Float)
 	fBal.SetString(bal.String())
 
@@ -96,7 +96,7 @@ func (t *txMgr) CreateTx(ctx context.Context) ([]byte, string) {
 	// transfer amount
 	amount := new(big.Int)
 	amount.SetString("50000000", 10) // 0.05 tokens
-	//amount.SetString("1000000000000000000000", 10) // 1000 tokens
+	// amount.SetString("1000000000000000000000", 10) // 1000 tokens
 	paddedAmount := common.LeftPadBytes(amount.Bytes(), 32)
 	fmt.Println(hexutil.Encode(paddedAmount)) // 0x00000000000000000000000000000000000000000000003635c9adc5dea00000
 	gasFeeCap, gasTipCap := big.NewInt(38694000460), big.NewInt(3869400046)
@@ -128,7 +128,7 @@ func (t *txMgr) CreateTx(ctx context.Context) ([]byte, string) {
 		To:        &toAddress,
 	}
 	tx := types.NewTx(dynamicFeeTx)
-	//tx := types.NewTransaction(nonce, toAddress, amount, gasLimit, gasPrice, nil)
+	// tx := types.NewTransaction(nonce, toAddress, amount, gasLimit, gasPrice, nil)
 
 	key, err := crypto.HexToECDSA(strings.TrimPrefix(t.privateKey, "0x"))
 	if err != nil {
