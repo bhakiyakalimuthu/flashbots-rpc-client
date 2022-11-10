@@ -1,11 +1,10 @@
-package fbclient
+package client
 
 import (
 	"context"
 	"encoding/json"
 
 	"github.com/bhakiyakalimuthu/flashbots-rpc-client/common"
-	"github.com/bhakiyakalimuthu/flashbots-rpc-client/rpc"
 	"go.uber.org/zap"
 )
 
@@ -26,12 +25,12 @@ const (
 
 type flashbotsClient struct {
 	logger     *zap.Logger
-	httpClient *rpc.HttpClient
+	httpClient *HttpClient
 }
 
 func NewFlashbotsClient(url string) *flashbotsClient {
 	logger := common.NewLogger()
-	httpClient, err := rpc.DialHttpClient(url)
+	httpClient, err := DialHttpClient(url)
 	if err != nil {
 		logger.Fatal("failed to dial http client", zap.Error(err))
 	}

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/bhakiyakalimuthu/flashbots-rpc-client/client"
 	"github.com/bhakiyakalimuthu/flashbots-rpc-client/common"
-	"github.com/bhakiyakalimuthu/flashbots-rpc-client/fbclient"
 	"github.com/bhakiyakalimuthu/flashbots-rpc-client/util"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"go.uber.org/zap"
@@ -26,7 +26,7 @@ func main() {
 	}}
 
 	// create flashbots client
-	c := fbclient.NewFlashbotsClient("https://relay-goerli.flashbots.net")
+	c := client.NewFlashbotsClient("https://relay-goerli.flashbots.net")
 
 	// call bundle
 	res, err := c.SendBundle(context.Background(), arg)
