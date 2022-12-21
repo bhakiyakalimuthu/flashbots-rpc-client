@@ -77,7 +77,6 @@ func (t *txMgr) CreateTx(ctx context.Context) ([]byte, string) {
 		return nil, ""
 	}
 
-	// id = big.NewInt(5) // Ganache has issue with chainID, using hard coded value
 	t.logger.Info("chainID", zap.Any("id", id))
 	// balance
 
