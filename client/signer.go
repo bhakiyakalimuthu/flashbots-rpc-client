@@ -1,9 +1,10 @@
-package common
+package client
 
 import (
 	"encoding/json"
 	"os"
 
+	"github.com/bhakiyakalimuthu/flashbots-rpc-client/common"
 	"github.com/ethereum/go-ethereum/accounts"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -20,8 +21,15 @@ type signer struct {
 
 func NewSigner() *signer {
 	return &signer{
-		logger:     NewLogger(),
+		logger:     common.NewLogger(),
 		privateKey: os.Getenv("SIGNER_PRIVATE_KEY"),
+	}
+}
+
+func NewSignerWithKey(privateKey string) *signer {
+	return &signer{
+		logger:     common.NewLogger(),
+		privateKey: privateKey,
 	}
 }
 

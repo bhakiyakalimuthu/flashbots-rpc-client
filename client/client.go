@@ -41,6 +41,19 @@ func NewFlashbotsClient(url string) *FlashbotsClient {
 	}
 }
 
+func NewFlashbotsClientWithSigner(url, signerKey string) *FlashbotsClient {
+	logger := common.NewLogger()
+	httpClient, err := DialHttpClientWithSingerKey(url, signerKey)
+	if err != nil {
+		logger.Fatal("failed to dial http client", zap.Error(err))
+	}
+
+	return &FlashbotsClient{
+		logger:     logger,
+		httpClient: httpClient,
+	}
+}
+
 func (fbc *FlashbotsClient) CallBundle(ctx context.Context, arg interface{}) (*common.CallBundleResponse, error) {
 	b, err := json.Marshal(arg)
 	if err != nil {
