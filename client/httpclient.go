@@ -20,7 +20,7 @@ type HttpClient struct {
 	url     string
 	mu      sync.Mutex // protects headers
 	headers http.Header
-	signer  common.Signer
+	signer  Signer
 }
 
 func DialHttpClient(rawURL string) (*HttpClient, error) {
@@ -39,7 +39,27 @@ func DialHttpClient(rawURL string) (*HttpClient, error) {
 		client:  client,
 		url:     rawURL,
 		headers: headers,
-		signer:  common.NewSigner(),
+		signer:  NewSigner(),
+	}, nil
+}
+
+func DialHttpClientWithSingerKey(rawURL, privateKey string) (*HttpClient, error) {
+	_, err := url.Parse(rawURL)
+	if err != nil {
+		return nil, err
+	}
+	headers := make(http.Header, 2)
+	headers.Set("accept", "application/json")
+	headers.Set("content-type", "application/json")
+	client := &http.Client{
+		Timeout: time.Second * 5,
+	}
+	return &HttpClient{
+		logger:  common.NewLogger(),
+		client:  client,
+		url:     rawURL,
+		headers: headers,
+		signer:  NewSignerWithKey(privateKey),
 	}, nil
 }
 
